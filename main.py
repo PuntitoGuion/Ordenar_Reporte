@@ -1,34 +1,6 @@
 import pandas as pd
 import os
-import pygame
-import requests
 from tkinter import filedialog, messagebox
-from io import BytesIO
-
-
-def sonido(url):
-    """URL ejemplo: \n
-    https://drive.google.com/uc?export=download&id=FILE_ID"""
-    pygame.mixer.init()
-    response = requests.get(url)
-
-    audio_data = BytesIO(response.content)
-
-    with open("temp_audio.mp3", "wb") as f:
-        f.write(audio_data.getbuffer())
-
-    pygame.mixer.music.load("temp_audio.mp3")
-    pygame.mixer.music.play()
-
-    # Esperar hasta que el audio termine de reproducirse
-    while pygame.mixer.music.get_busy():
-        continue
-        
-    pygame.quit()
-    os.remove("temp_audio.mp3")
-
-sonido("https://drive.google.com/uc?export=download&id=1VJD44d5SF3g2H5rH0CJIW1bo5DfMkDeV")
-
 
 def sort_group(group):
     sorted_group = group.sort_values(by=["Fecha", "Cuenta"], ascending=[True,False])
@@ -70,7 +42,6 @@ df = df.append(nuevo_registro,ignore_index=True)
 while True:
     try:
         df.to_excel(f"{fileName}.xlsx",index=False)
-        sonido("https://drive.google.com/uc?export=download&id=1XunfCmrO_6BHtYcoxL6Cyq4HuE66UlEs")
         ruta_actual = os.getcwd()
         os.chdir(ruta_actual)
         os.system(f'start excel.exe "{fileName}.xlsx"')
